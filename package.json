@@ -1,0 +1,25 @@
+{
+  "name": "qp-asset",
+  "version": "1.0.0",
+  "description": "asset manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cjr--/qp-asset.git"
+  },
+  "author": "CJR",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cjr--/qp-asset/issues"
+  },
+  "homepage": "https://github.com/cjr--/qp-asset#readme",
+  "dependencies": {
+    "glob": "^7.1.1",
+    "qp-define": "^1.2.17",
+    "qp-library": "^1.1.40",
+    "qp-utility": "^1.2.43"
+  }
+}
