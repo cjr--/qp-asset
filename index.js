@@ -69,6 +69,10 @@ define(module, function(exports, require, make) {
       }
     },
 
+    add_files: function(type, files) {
+      qp.each(files, file => this.add_file(type, file));
+    },
+
     add_path: function(dir) {
       if (qp.starts(dir, '/') && !qp.starts(dir, this.root_directory)) {
         return path.join(this.root_directory, dir);
