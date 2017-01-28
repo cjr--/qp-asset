@@ -20,6 +20,7 @@ define(module, function(exports, require, make) {
     excluded_paths: [],
 
     files: {
+      library: [],
       copy: [],
       merge: []
     },
@@ -64,6 +65,9 @@ define(module, function(exports, require, make) {
         }
         if (!excluded) {
           this.file_list.push(filename);
+          if (type === 'copy' && filename.indexOf('/library/') !== -1) {
+            type = 'library';
+          }
           this.files[type].push(filename);
         }
       }
