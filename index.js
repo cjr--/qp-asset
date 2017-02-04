@@ -46,6 +46,9 @@ define(module, function(exports, require, make) {
             if (qp.not_empty(child_assets)) {
               qp.push(this.assets, child_assets);
             }
+          } else if (parts[0] === 'state') {
+            var kvp = qp.map(parts[1].split('='), part => qp.trim(part));
+            this.state[kvp[0]] = kvp[1];
           } else {
             var asset = { type: parts[0], target: this.add_path(parts[1]) };
             asset[parts[0]] = true;
