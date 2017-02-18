@@ -13,6 +13,8 @@ define(module, function(exports, require, make) {
 
     root_directory: '',
 
+    asset_file: null,
+
     state: {},
     assets: [],
 
@@ -34,9 +36,9 @@ define(module, function(exports, require, make) {
     },
 
     parse: function(filename) {
-      var asset_file = fso.load(this.add_path(filename));
-      if (asset_file.exists) {
-        qp.each(qp.lines(asset_file.read_sync()), (line) => {
+      this.asset_file = fso.load(this.add_path(filename));
+      if (this.asset_file.exists) {
+        qp.each(qp.lines(this.asset_file.read_sync()), (line) => {
           line = qp.trim(line);
           if (qp.empty(line) || qp.starts(line, '//')) return;
           line = qp.format(line, this.state);
