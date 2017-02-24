@@ -31,7 +31,7 @@ define(module, function(exports, require, make) {
       this.root_directory = options.root || process.cwd();
       this.parse(options.file);
       qp.each(this.assets, (asset) => {
-        qp.each(glob.sync(asset.target), file => this.add_file(asset.type, file));
+        qp.each(glob.sync(asset.target), file => this.add_file({ type: asset.type, file: file }));
       });
     },
 
@@ -60,26 +60,36 @@ define(module, function(exports, require, make) {
       }
     },
 
-    add_file: function(type, filename) {
-      if (this.file_list.indexOf(filename) === -1) {
+    add_file: function(o) {
+      var type = o.type;
+      var file = o.file;
+      if (this.file_list.indexOf(file) === -1) {
         var excluded = false;
         var paths = this.excluded_paths;
         for (var i = 0, l = paths.length; i < l; i++) {
-          excluded = filename.lastIndexOf(paths[i], 0) === 0;
+          excluded = file.lastIndexOf(paths[i], 0) === 0;
           if (excluded) break;
         }
         if (!excluded) {
-          this.file_list.push(filename);
-          if (type === 'copy' && filename.indexOf('/library/') !== -1) {
+          if (o.prepend) {
+            this.file_list.unshift(file);
+          } else {
+            this.file_list.push(file);
+          }
+          if (type === 'copy' && file.indexOf('/library/') !== -1) {
             type = 'library';
           }
-          this.files[type].push(filename);
+          if (o.prepend) {
+            this.files[type].unshift(file);
+          } else {
+            this.files[type].push(file);
+          }
         }
       }
     },
 
-    add_files: function(type, files) {
-      qp.each(files, file => this.add_file(type, file));
+    add_files: function(o) {
+      qp.each(o.files, file => this.add_file({ type: o.type, file: file, prepend: o.prepend || false }));
     },
 
     add_path: function(dir) {
