@@ -22,7 +22,6 @@ define(module, function(exports, require, make) {
     excluded_paths: [],
 
     files: {
-      library: [],
       copy: [],
       merge: []
     },
@@ -44,7 +43,7 @@ define(module, function(exports, require, make) {
           line = qp.format(line, this.state);
           var parts = qp.map(line.split(':'), part => qp.trim(part));
           if (parts[0] === 'asset') {
-            var child_assets = this.parse(parts[1], this.state);
+            var child_assets = this.parse(parts[1]);
             if (qp.not_empty(child_assets)) {
               qp.push(this.assets, child_assets);
             }
@@ -71,25 +70,14 @@ define(module, function(exports, require, make) {
           if (excluded) break;
         }
         if (!excluded) {
-          if (o.prepend) {
-            this.file_list.unshift(file);
-          } else {
-            this.file_list.push(file);
-          }
-          if (type === 'copy' && file.indexOf('/library/') !== -1) {
-            type = 'library';
-          }
-          if (o.prepend) {
-            this.files[type].unshift(file);
-          } else {
-            this.files[type].push(file);
-          }
+          this.file_list.push(file);
+          this.files[type].push(file);
         }
       }
     },
 
     add_files: function(o) {
-      qp.each(o.files, file => this.add_file({ type: o.type, file: file, prepend: o.prepend || false }));
+      qp.each(o.files, file => this.add_file({ type: o.type, file: file }));
     },
 
     add_path: function(dir) {
