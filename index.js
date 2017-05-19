@@ -30,7 +30,9 @@ define(module, function(exports, require, make) {
       this.root_directory = options.root || process.cwd();
       this.parse(options.file);
       qp.each(this.assets, (asset) => {
-        qp.each(glob.sync(asset.target), file => this.add_file({ type: asset.type, file: file }));
+        if (asset.merge || asset.copy) {
+          qp.each(glob.sync(asset.target), file => this.add_file({ type: asset.type, file: file }));
+        }
       });
     },
 
