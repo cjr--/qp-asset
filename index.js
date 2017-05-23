@@ -1,4 +1,4 @@
-define(module, function(exports, require, make) {
+define(module, function(exports, require) {
 
   var path = require('path');
   var glob = require('glob');
@@ -7,7 +7,7 @@ define(module, function(exports, require, make) {
   var fso = require('qp-library/fso');
   var log = require('qp-library/log');
 
-  make({
+  qp.make(exports, {
 
     ns: 'qp-asset/asset',
 
@@ -30,8 +30,11 @@ define(module, function(exports, require, make) {
       this.root_directory = options.root || process.cwd();
       this.parse(options.file);
       qp.each(this.assets, (asset) => {
+        // console.log(qp.rpad(asset.type, 6), asset.target)
         if (asset.merge || asset.copy) {
-          qp.each(glob.sync(asset.target), file => this.add_file({ type: asset.type, file: file }));
+          qp.each(glob.sync(asset.target), file => {
+            this.add_file({ type: asset.type, file: file })
+          });
         }
       });
     },
