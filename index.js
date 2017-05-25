@@ -14,6 +14,7 @@ define(module, function(exports, require) {
     root_directory: '',
 
     asset_file: null,
+    asset_dir: null,
 
     state: {},
     assets: [],
@@ -28,12 +29,13 @@ define(module, function(exports, require) {
 
     init: function(options) {
       this.root_directory = options.root || process.cwd();
+      this.asset_dir = fso.pathname(options.file);
       this.parse(options.file);
       qp.each(this.assets, (asset) => {
         // console.log(qp.rpad(asset.type, 6), asset.target)
         if (asset.merge || asset.copy) {
           qp.each(glob.sync(asset.target), file => {
-            this.add_file({ type: asset.type, file: file })
+            this.add_file({ type: asset.type, file: file });
           });
         }
       });
