@@ -29,7 +29,7 @@ define(module, function(exports, require) {
 
     init: function(options) {
       this.root_directory = options.root || process.cwd();
-      this.asset_dir = fso.pathname(options.file);
+      this.asset_dir = path.dirname(options.file);
       this.parse(options.file);
       qp.each(this.assets, (asset) => {
         // console.log(qp.rpad(asset.type, 6), asset.target)
