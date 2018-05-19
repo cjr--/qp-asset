@@ -49,6 +49,7 @@ define(module, function(exports, require) {
     parse: function(filename) {
       this.asset_file = fso.load(this.add_path(filename));
       if (this.asset_file.exists) {
+        // log(this.asset_file.fullname)
         qp.each(qp.lines(this.asset_file.read_sync()), (line) => {
           line = qp.trim(line);
           if (qp.empty(line) || qp.starts(line, '//')) return;
@@ -87,6 +88,7 @@ define(module, function(exports, require) {
           if (excluded) break;
         }
         if (!excluded) {
+          // log(qp.rpad(type, 6), file)
           this.file_list.push(file);
           this.files[type].push(file);
         }
