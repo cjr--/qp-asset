@@ -19,7 +19,7 @@
   "dependencies": {
     "glob": "^7.1.3",
     "qp-define": "^2",
-    "qp-library": "^2.1.30",
-    "qp-utility": "^1.4.50"
+    "qp-library": "^2.1.32",
+    "qp-utility": "^1.4.51"
   }
 }
