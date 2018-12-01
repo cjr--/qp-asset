@@ -1,6 +1,6 @@
 {
   "name": "qp-asset",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "asset manager",
   "main": "index.js",
   "scripts": {
