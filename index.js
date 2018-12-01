@@ -69,9 +69,9 @@ define(module, function(exports, require) {
           } else if (key.slice(0, 5) === 'link_') {
             qp.push(this.assets, { type: 'link', target: value, link: true, ext: key.slice(5) });
           } else {
-            var asset = { type: key, target: this.add_path(value) };
-            asset[key] = true;
-            qp.push(this.assets, asset);
+            var attr = qp.between(value, '[', ']');
+            if (attr) value = qp.rtrim(qp.before_last(value, '['));
+            qp.push(this.assets, { type: key, target: this.add_path(value), attributes: attr, [key]: true });
           }
         });
       }
