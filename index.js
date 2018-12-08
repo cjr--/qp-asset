@@ -27,6 +27,7 @@ define(module, function(exports, require) {
     files: {
       copy: [],
       merge: [],
+      move: [],
       copy_to: []
     },
 
@@ -36,7 +37,7 @@ define(module, function(exports, require) {
       this.parse(options.file);
       qp.each(this.assets, (asset) => {
         // log(qp.rpad(asset.type, 8), asset.target)
-        if (asset.merge || asset.copy) {
+        if (asset.merge || asset.copy || asset.move) {
           qp.each(glob.sync(asset.target), file => {
             this.add_file({ type: asset.type, file: file });
           });
@@ -74,6 +75,8 @@ define(module, function(exports, require) {
             this.state[kvp[0]] = kvp[1];
           } else if (key.slice(0, 5) === 'link_') {
             qp.push(this.assets, { type: 'link', target: value, link: true, ext: key.slice(5) });
+          } else if (key === 'move') {
+            qp.push(this.assets, { type: 'move', move: true, target: this.add_path(value) });
           } else if (key === 'copy_to') {
             var copy_to = qp.map(value.split('>>'), part => qp.trim(part));
             qp.push(this.assets, { type: 'copy_to', copy_to: true, source: this.add_path(copy_to[0]), target: copy_to[1] });
