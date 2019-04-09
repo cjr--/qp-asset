@@ -16,6 +16,8 @@ define(module, function(exports, require) {
     asset_file: null,
     asset_dir: null,
 
+    asset_file_list: [],
+
     state: {},
     assets: [],
 
@@ -42,7 +44,7 @@ define(module, function(exports, require) {
             this.add_file({ type: asset.type, file: file });
           });
         } else if (asset.copy_to) {
-          //log(qp.rpad(asset.type, 8), asset.source)
+          // log(qp.rpad(asset.type, 8), asset.source)
           qp.each(glob.sync(asset.source), file => {
             this.add_file({ type: 'copy_to', file: file, target_dir: asset.target });
           });
@@ -55,8 +57,9 @@ define(module, function(exports, require) {
 
     parse: function(filename) {
       this.asset_file = fso.load(this.add_path(filename));
-      if (this.asset_file.exists) {
+      if (this.asset_file.exists && qp.not_in(this.asset_file.fullname, this.asset_file_list)) {
         // log(this.asset_file.fullname)
+        this.asset_file_list.push(this.asset_file.fullname);
         qp.each(qp.lines(this.asset_file.read_sync()), (line) => {
           line = qp.trim(line);
           if (qp.empty(line) || qp.starts(line, '//')) return;
