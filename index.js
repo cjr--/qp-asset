@@ -36,7 +36,8 @@ define(module, function(exports, require) {
     init: function(options) {
       this.root_directory = options.root || process.cwd();
       this.asset_dir = path.dirname(options.file);
-      this.parse(options.file);
+      this.asset_file = fso.load(this.add_path(options.file));
+      this.parse(this.asset_file);
       qp.each(this.assets, (asset) => {
         // log(qp.rpad(asset.type, 8), asset.target)
         if (asset.merge || asset.move) {
@@ -55,12 +56,11 @@ define(module, function(exports, require) {
       });
     },
 
-    parse: function(filename) {
-      this.asset_file = fso.load(this.add_path(filename));
-      if (this.asset_file.exists && qp.not_in(this.asset_file.fullname, this.asset_file_list)) {
-        // log(this.asset_file.fullname)
-        this.asset_file_list.push(this.asset_file.fullname);
-        qp.each(qp.lines(this.asset_file.read_sync()), (line) => {
+    parse: function(asset_file) {
+      if (asset_file.exists && qp.not_in(asset_file.fullname, this.asset_file_list)) {
+        // log(asset_file.fullname)
+        this.asset_file_list.push(asset_file.fullname);
+        qp.each(qp.lines(asset_file.read_sync()), (line) => {
           line = qp.trim(line);
           if (qp.empty(line) || qp.starts(line, '//')) return;
           line = qp.format(line, this.state);
@@ -69,7 +69,7 @@ define(module, function(exports, require) {
           var value = parts[1];
 
           if (key === 'asset') {
-            var child_assets = this.parse(value);
+            var child_assets = this.parse(fso.load(this.add_path(value)));
             if (qp.not_empty(child_assets)) {
               qp.push(this.assets, child_assets);
             }
