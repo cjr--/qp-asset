@@ -18,8 +18,8 @@
   "homepage": "https://github.com/cjr--/qp-asset#readme",
   "dependencies": {
     "glob": "^7.1.6",
-    "qp-define": "^2",
-    "qp-library": "^2.1.45",
-    "qp-utility": "^1.4.65"
+    "qp-define": "^2.0.4",
+    "qp-library": "^2.1.49",
+    "qp-utility": "^1.5.5"
   }
 }
