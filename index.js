@@ -30,6 +30,7 @@ define(module, function(exports, require) {
       copy: [],
       merge: [],
       move: [],
+      move_to: [],
       copy_to: []
     },
 
@@ -44,7 +45,7 @@ define(module, function(exports, require) {
           qp.each(glob.sync(asset.target), file => {
             this.add_file({ type: asset.type, file: file });
           });
-        } else if (asset.copy || asset.copy_to) {
+        } else if (asset.copy || asset.copy_to || asset.move_to) {
           // log(qp.rpad(asset.type, 8), asset.source)
           qp.each(glob.sync(asset.source), file => {
             this.add_file({ type: asset.type, file: file, target_dir: asset.target });
@@ -112,6 +113,8 @@ define(module, function(exports, require) {
           // log(qp.rpad(o.type, 8), file)
           if (o.type === 'copy_to' || o.type === 'copy') {
             this.files.copy_to.push({ source: file, target: path.join(o.target_dir, path.basename(file)) });
+          } else if (o.type === 'move_to') {
+            this.files.move_to.push({ source: file, target: path.join(o.target_dir, path.basename(file)) });
           } else {
             this.files[o.type].push(file);
           }
