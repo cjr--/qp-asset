@@ -80,6 +80,9 @@ define(module, function(exports, require) {
             qp.push(this.assets, { type: 'link', target: value, link: true, ext: key.slice(5) });
           } else if (key === 'move') {
             qp.push(this.assets, { type: 'move', move: true, target: this.add_path(value) });
+          } else if (key === 'move_to') {
+            var move_to = qp.map(value.split('>>'), part => qp.trim(part));
+            qp.push(this.assets, { type: 'move_to', move_to: true, source: this.add_path(move_to[0]), target: move_to[1] });
           } else if (key === 'copy_to') {
             var copy_to = qp.map(value.split('>>'), part => qp.trim(part));
             qp.push(this.assets, { type: 'copy_to', copy_to: true, source: this.add_path(copy_to[0]), target: copy_to[1] });
